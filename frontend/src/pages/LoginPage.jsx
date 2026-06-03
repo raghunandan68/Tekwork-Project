@@ -10,6 +10,14 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
+  const handleToggleMode = (newMode) => {
+    setMode(newMode);
+    setEmail("");
+    setPassword("");
+    setError("");
+    setMessage("");
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -50,19 +58,7 @@ export default function LoginPage() {
     }
   };
 
-  const handleSeedDemo = async () => {
-    setError("");
-    setMessage("");
-    setLoading(true);
-    try {
-      await seedDemoData();
-      setMessage("Demo data loaded successfully.");
-    } catch (err) {
-      setError(err.message || "Failed to load demo data.");
-    } finally {
-      setLoading(false);
-    }
-  };
+
 
   return (
     <div style={{
@@ -90,6 +86,20 @@ export default function LoginPage() {
             fontSize: 26, marginBottom: 12,
           }}>🏪</div>
           <h1 style={{ margin: 0, fontSize: 24, fontWeight: 800, color: "#111" }}>SmartShelf AI</h1>
+          <div style={{
+            display: "inline-block",
+            padding: "4px 12px",
+            background: mode === "login" ? "#E3F2FD" : "#E8F5E9",
+            color: mode === "login" ? "#0D47A1" : "#1B5E20",
+            borderRadius: 12,
+            fontSize: 12,
+            fontWeight: 700,
+            marginTop: 8,
+            textTransform: "uppercase",
+            letterSpacing: "0.05em"
+          }}>
+            {mode === "login" ? "Sign In" : "Sign Up"}
+          </div>
           <p style={{ margin: "8px 0 0", fontSize: 13, color: "#888" }}>
             {mode === "login" ? "Sign in to your store dashboard" : "Create your store account"}
           </p>
@@ -145,13 +155,13 @@ export default function LoginPage() {
         <div style={{ marginTop: 16, textAlign: "center", fontSize: 13, color: "#666" }}>
           {mode === "login" ? (
             <>No account?{" "}
-              <button type="button" onClick={() => setMode("signup")} style={{ background: "none", border: "none", color: "#1D9E75", fontWeight: 700, cursor: "pointer" }}>
+              <button type="button" onClick={() => handleToggleMode("signup")} style={{ background: "none", border: "none", color: "#1D9E75", fontWeight: 700, cursor: "pointer" }}>
                 Sign up
               </button>
             </>
           ) : (
             <>Have an account?{" "}
-              <button type="button" onClick={() => setMode("login")} style={{ background: "none", border: "none", color: "#1D9E75", fontWeight: 700, cursor: "pointer" }}>
+              <button type="button" onClick={() => handleToggleMode("login")} style={{ background: "none", border: "none", color: "#1D9E75", fontWeight: 700, cursor: "pointer" }}>
                 Sign in
               </button>
             </>
