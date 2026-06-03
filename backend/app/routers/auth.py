@@ -65,3 +65,17 @@ async def get_me(user_id: str = Depends(get_current_user)):
         return {"user_id": result.user.id, "email": result.user.email}
     except Exception:
         return {"user_id": user_id, "email": "unknown"}
+
+
+@router.post("/seed-demo")
+async def seed_demo(user_id: str = Depends(get_current_user)):
+    """Populate demo products, transactions, rules, and shelf zones for the current user."""
+    db = get_supabase()
+    try:
+        db.rpc("seed_demo_data", {"p_user_id": user_id}).execute()
+        return {"message": "Demo data seeded successfully.", "user_id": user_id}
+    except Exception as e:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Seed failed. Run database/seed/seed_data.sql in Supabase first. Error: {e}",
+        )

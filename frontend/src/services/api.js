@@ -12,12 +12,34 @@ async function authHeaders() {
 
 async function request(path, options = {}) {
   const headers = await authHeaders();
-  const res = await fetch(`${BASE_URL}${path}`, { ...options, headers: { ...headers, ...options.headers } });
+  const res = await fetch(`${BASE_URL}${path}`, {
+    ...options,
+    headers: { ...headers, ...options.headers },
+  });
+
   if (!res.ok) {
-    const errorBody = await res.text();
-    throw new Error(`API error ${res.status}: ${errorBody}`);
+    let detail = await res.text();
+    try {
+      const json = JSON.parse(detail);
+      detail = json.detail || json.message || detail;
+    } catch {
+      /* keep raw text */
+    }
+    throw new Error(typeof detail === 'string' ? detail : `API error ${res.status}`);
   }
-  return res.json();
+
+  if (res.status === 204) return null;
+  const text = await res.text();
+  return text ? JSON.parse(text) : null;
+}
+
+// ── Auth ─────────────────────────────────────────────────────────────────────
+export function seedDemoData() {
+  return request('/auth/seed-demo', { method: 'POST' });
+}
+
+export function getMe() {
+  return request('/auth/me');
 }
 
 // ── Dashboard ──────────────────────────────────────────────────────────────

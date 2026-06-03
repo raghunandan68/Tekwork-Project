@@ -2,12 +2,17 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.routers import auth, dashboard, products, inventory, transactions, analysis, shelves, recommendations, analytics
 
+import os
+
 app = FastAPI(title="Smart Shelf AI API", version="1.0.0")
 
 # CORS middleware
+# In production, set FRONTEND_URL in your .env (e.g., FRONTEND_URL=https://my-smart-shelf.vercel.app)
+frontend_url = os.getenv("FRONTEND_URL", "http://localhost:3000")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:3001"],
+    allow_origins=[frontend_url, "http://localhost:3001"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
