@@ -1,70 +1,166 @@
-# Getting Started with Create React App
+# 🏪 Smart Shelf AI
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+**AI-powered retail shelf management platform** — Market basket analysis, smart shelf planning, inventory management, and real-time analytics for small retail stores.
 
-## Available Scripts
+![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)
+![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black)
+![Supabase](https://img.shields.io/badge/Supabase-3FCF8E?style=for-the-badge&logo=supabase&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## 📁 Project Structure
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+```
+smart-shelf-ai/
+├── frontend/          # React app (Create React App)
+│   ├── src/
+│   │   ├── components/    # Reusable UI components
+│   │   ├── pages/         # Page-level components
+│   │   ├── services/      # API & auth service layer
+│   │   └── App.jsx        # Main app with auth routing
+│   └── package.json
+│
+├── backend/           # FastAPI REST API
+│   ├── app/
+│   │   ├── models/        # Pydantic schemas
+│   │   ├── routers/       # API route handlers
+│   │   ├── services/      # Business logic
+│   │   ├── main.py        # App entry point
+│   │   ├── auth.py        # JWT authentication
+│   │   └── database.py    # Supabase client
+│   └── requirements.txt
+│
+├── database/          # Supabase PostgreSQL
+│   ├── migrations/        # Schema SQL
+│   └── seed/              # Seed data SQL
+│
+└── README.md
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+## ✨ Features
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+| Feature | Description |
+|---------|-------------|
+| 📊 **Dashboard** | KPI cards, sales trends, category distribution, stock alerts |
+| 📦 **Product Management** | CRUD operations with search and filtering |
+| 🗃️ **Inventory Management** | Stock level monitoring with visual indicators |
+| 🧾 **Transactions** | Record sales, transaction history |
+| 🔬 **Market Basket Analysis** | Real-time Apriori algorithm for association rules |
+| 🏪 **Shelf Planner** | AI-recommended product placement zones |
+| 💡 **Recommendations** | Cross-sell, restock, and shelf placement suggestions |
+| 📈 **Analytics** | Revenue trends, heatmaps, inventory reports |
+| 🔐 **Authentication** | Supabase Auth with email/password login |
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 🚀 Quick Start
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Prerequisites
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- **Node.js** 18+ and npm
+- **Python** 3.10+
+- **Supabase** account ([supabase.com](https://supabase.com))
 
-### `npm run eject`
+### 1. Database Setup (Supabase)
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+1. Create a new Supabase project at [supabase.com](https://supabase.com)
+2. Go to **SQL Editor** and run `database/migrations/001_initial_schema.sql`
+3. Create a user account via the app (or Supabase Auth dashboard)
+4. Run seed data: `SELECT seed_demo_data('your-user-uuid');`
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+See [database/README.md](database/README.md) for details.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### 2. Backend Setup
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```bash
+cd backend
 
-## Learn More
+# Create virtual environment
+python -m venv venv
+venv\Scripts\activate        # Windows
+# source venv/bin/activate   # Mac/Linux
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+# Install dependencies
+pip install -r requirements.txt
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+# Configure environment
+copy .env.example .env
+# Edit .env with your Supabase credentials
 
-### Code Splitting
+# Run the server
+uvicorn app.main:app --reload --port 8000
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+API docs available at: **http://localhost:8000/docs**
 
-### Analyzing the Bundle Size
+### 3. Frontend Setup
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```bash
+cd frontend
 
-### Making a Progressive Web App
+# Install dependencies
+npm install
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+# Configure environment
+# Edit .env with your Supabase URL and anon key
 
-### Advanced Configuration
+# Run the dev server
+npm start
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+App available at: **http://localhost:3000**
 
-### Deployment
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## 🔑 Environment Variables
 
-### `npm run build` fails to minify
+### Backend (`backend/.env`)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+| Variable | Description |
+|----------|-------------|
+| `SUPABASE_URL` | Your Supabase project URL |
+| `SUPABASE_KEY` | Supabase anon/public key |
+| `SUPABASE_SERVICE_KEY` | Supabase service role key |
+| `SUPABASE_JWT_SECRET` | JWT secret from Supabase settings |
+
+### Frontend (`frontend/.env`)
+
+| Variable | Description |
+|----------|-------------|
+| `REACT_APP_API_URL` | Backend API URL (default: `http://localhost:8000/api`) |
+| `REACT_APP_SUPABASE_URL` | Your Supabase project URL |
+| `REACT_APP_SUPABASE_ANON_KEY` | Supabase anon/public key |
+
+---
+
+## 📡 API Endpoints
+
+| Group | Endpoints | Auth |
+|-------|-----------|------|
+| Auth | `POST /api/auth/signup`, `POST /api/auth/login`, `GET /api/auth/me` | Public (signup/login) |
+| Dashboard | `GET /api/dashboard/summary`, `/sales-trend`, `/category-distribution` | 🔒 |
+| Products | `GET/POST /api/products`, `PUT/DELETE /api/products/{id}` | 🔒 |
+| Inventory | `GET /api/inventory/summary`, `/stock-levels`, `POST /{id}/add-stock` | 🔒 |
+| Transactions | `GET/POST /api/transactions` | 🔒 |
+| Analysis | `GET /api/analysis/summary`, `/rules`, `POST /analysis/run` | 🔒 |
+| Shelves | `GET /api/shelves/zones`, `PUT /zones/{id}/products` | 🔒 |
+| Recommendations | `GET /api/recommendations/cross-sell`, `/restock`, `/shelf-placement` | 🔒 |
+| Analytics | `GET /api/analytics/revenue-trend`, `/top-products`, `/category-sales`, `/lift-heatmap`, `/inventory-report` | 🔒 |
+
+---
+
+## 🛠️ Tech Stack
+
+- **Frontend**: React 19, Recharts, Supabase JS Client
+- **Backend**: FastAPI, Pydantic, python-jose (JWT), Supabase Python Client
+- **Database**: PostgreSQL (Supabase) with Row Level Security
+- **Auth**: Supabase Auth (email/password)
+
+---
+
+## 📄 License
+
+MIT License
