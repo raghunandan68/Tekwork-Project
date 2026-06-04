@@ -7,6 +7,7 @@ class ProductCreate(BaseModel):
     category: str
     price: float
     stock: int
+    seasonality: Optional[str] = "Year-Round"
 
 
 class ProductUpdate(BaseModel):
@@ -15,6 +16,7 @@ class ProductUpdate(BaseModel):
     price: Optional[float] = None
     stock: Optional[int] = None
     status: Optional[str] = None
+    seasonality: Optional[str] = None
 
 
 class ProductResponse(BaseModel):
@@ -25,6 +27,7 @@ class ProductResponse(BaseModel):
     stock: int
     sold: int
     status: str
+    seasonality: Optional[str] = "Year-Round"
     created_at: Optional[str] = None
     updated_at: Optional[str] = None
 

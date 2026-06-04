@@ -10,6 +10,13 @@ async function authHeaders() {
   };
 }
 
+async function authHeadersNoContentType() {
+  const { data: { session } } = await supabase.auth.getSession();
+  return {
+    ...(session ? { Authorization: `Bearer ${session.access_token}` } : {}),
+  };
+}
+
 async function request(path, options = {}) {
   const headers = await authHeaders();
   const res = await fetch(`${BASE_URL}${path}`, {
@@ -29,6 +36,27 @@ async function request(path, options = {}) {
   }
 
   if (res.status === 204) return null;
+  const text = await res.text();
+  return text ? JSON.parse(text) : null;
+}
+
+async function uploadFile(path, file) {
+  const headers = await authHeadersNoContentType();
+  const formData = new FormData();
+  formData.append('file', file);
+  const res = await fetch(`${BASE_URL}${path}`, {
+    method: 'POST',
+    headers,
+    body: formData,
+  });
+  if (!res.ok) {
+    let detail = await res.text();
+    try {
+      const json = JSON.parse(detail);
+      detail = json.detail || json.message || detail;
+    } catch { /* keep raw text */ }
+    throw new Error(typeof detail === 'string' ? detail : `Upload error ${res.status}`);
+  }
   const text = await res.text();
   return text ? JSON.parse(text) : null;
 }
@@ -73,6 +101,19 @@ export function deleteProduct(id) {
   return request(`/products/${id}`, { method: 'DELETE' });
 }
 
+export function uploadProducts(file) {
+  return uploadFile('/products/upload', file);
+}
+
+// ── Categories ─────────────────────────────────────────────────────────────
+export function getCategories() {
+  return request('/products/categories');
+}
+
+export function addCategory(name) {
+  return request('/products/categories', { method: 'POST', body: JSON.stringify({ name }) });
+}
+
 // ── Inventory ──────────────────────────────────────────────────────────────
 export function getInventorySummary() {
   return request('/inventory/summary');
@@ -96,6 +137,10 @@ export function getTransactions() {
 
 export function createTransaction(data) {
   return request('/transactions', { method: 'POST', body: JSON.stringify(data) });
+}
+
+export function uploadTransactions(file) {
+  return uploadFile('/transactions/upload', file);
 }
 
 // ── Analysis ───────────────────────────────────────────────────────────────
