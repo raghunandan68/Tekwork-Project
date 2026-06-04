@@ -70,7 +70,8 @@ BEGIN
     (p_user_id, 'T1005', '2025-06-03', 290.00, 'Completed'),
     (p_user_id, 'T1006', '2025-06-03',  75.00, 'Completed'),
     (p_user_id, 'T1007', '2025-06-04', 275.00, 'Completed'),
-    (p_user_id, 'T1008', '2025-06-04', 135.00, 'Completed');
+    (p_user_id, 'T1008', '2025-06-04', 135.00, 'Completed')
+  ON CONFLICT (user_id, transaction_id) DO NOTHING;
 
   -- ==========================================================================
   -- Transaction Items

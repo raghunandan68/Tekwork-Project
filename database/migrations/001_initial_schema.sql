@@ -35,11 +35,12 @@ CREATE TABLE IF NOT EXISTS products (
 CREATE TABLE IF NOT EXISTS transactions (
   id SERIAL PRIMARY KEY,
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
-  transaction_id VARCHAR(50) UNIQUE NOT NULL,
+  transaction_id VARCHAR(50) NOT NULL,
   date DATE NOT NULL DEFAULT CURRENT_DATE,
   total NUMERIC(10,2) NOT NULL DEFAULT 0 CHECK (total >= 0),
   status VARCHAR(50) NOT NULL DEFAULT 'Completed',
-  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  UNIQUE (user_id, transaction_id)
 );
 
 -- Transaction Items (join table)
