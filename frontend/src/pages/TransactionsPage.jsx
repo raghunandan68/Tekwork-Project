@@ -146,10 +146,12 @@ export default function TransactionsPage() {
                     <td style={{ padding: "11px 12px", color: "#666" }}>{t.date}</td>
                     <td style={{ padding: "11px 12px" }}>
                       <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
-                        {t.items.map((item) => <Badge key={item} variant="info">{item}</Badge>)}
+                        {(t.items || []).length > 0
+                          ? (t.items || []).map((item) => <Badge key={item} variant="info">{item}</Badge>)
+                          : <span style={{ color: "#bbb", fontSize: 12 }}>—</span>}
                       </div>
                     </td>
-                    <td style={{ padding: "11px 12px", fontWeight: 700, color: "#1D9E75" }}>₹{t.total}</td>
+                    <td style={{ padding: "11px 12px", fontWeight: 700, color: "#1D9E75" }}>₹{(t.total || 0).toFixed(2)}</td>
                     <td style={{ padding: "11px 12px" }}><Badge variant="success">{t.status}</Badge></td>
                   </tr>
                 ))}

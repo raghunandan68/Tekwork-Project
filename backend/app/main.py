@@ -16,11 +16,14 @@ origins = [
     "http://localhost:3001",
     "http://127.0.0.1:3000",
     "http://127.0.0.1:3001",
+    # Explicitly allow the production Vercel frontend
+    "https://my-smart-shelf.vercel.app",
 ]
 
 if frontend_url:
     for url in frontend_url.split(","):
-        stripped = url.strip()
+        # Strip trailing slash — browser Origin headers never include a trailing slash
+        stripped = url.strip().rstrip("/")
         if stripped and stripped not in origins:
             origins.append(stripped)
 

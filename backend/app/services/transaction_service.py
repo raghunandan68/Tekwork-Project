@@ -6,13 +6,18 @@ from app.database import get_supabase
 
 
 def get_all_transactions(user_id: str):
-    """Return all transactions with their items for a user."""
+    """Return all transactions with their items for a user.
+
+    Uses a single join query (transactions → transaction_items) so that
+    item data loads correctly even when the service-role key is used
+    (auth.uid() is NULL for service-role, which breaks row-level sub-queries).
+    """
     db = get_supabase()
 
-    # Fetch transactions ordered by date descending
+    # Single query: fetch transactions with nested transaction_items via FK join
     txns = (
         db.table("transactions")
-        .select("*")
+        .select("id, transaction_id, date, total, status, transaction_items(product_name, quantity, price)")
         .eq("user_id", user_id)
         .order("date", desc=True)
         .order("id", desc=True)
@@ -21,20 +26,15 @@ def get_all_transactions(user_id: str):
 
     results = []
     for txn in txns.data:
-        # Get items for this transaction
-        items = (
-            db.table("transaction_items")
-            .select("product_name, quantity, price")
-            .eq("transaction_id", txn["id"])
-            .execute()
-        )
-        item_names = [item["product_name"] for item in items.data]
+        # transaction_items is returned as a nested list by Supabase
+        raw_items = txn.get("transaction_items") or []
+        item_names = [item["product_name"] for item in raw_items if item.get("product_name")]
         results.append({
             "id": txn["id"],
             "transaction_id": txn["transaction_id"],
             "date": txn["date"],
             "items": item_names,
-            "total": float(txn["total"]),
+            "total": float(txn["total"] or 0),
             "status": txn["status"],
         })
 
