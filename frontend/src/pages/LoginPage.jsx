@@ -38,15 +38,7 @@ export default function LoginPage() {
         if (authError) throw authError;
 
         if (data.session) {
-          try {
-            await seedDemoData();
-            setMessage("Account created and demo data loaded. Welcome!");
-          } catch (seedErr) {
-            setMessage(
-              "Account created. Run database/seed/seed_data.sql in Supabase, then sign in — or use Seed Demo Data after login."
-            );
-            console.warn("Seed failed:", seedErr);
-          }
+          setMessage("Account created successfully. Welcome!");
         } else {
           setMessage("Check your email to confirm your account, then sign in.");
         }
