@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { supabase, isSupabaseConfigured } from "../services/supabaseClient";
-import { seedDemoData } from "../services/api";
 
 export default function LoginPage() {
   const [mode, setMode] = useState("login");
