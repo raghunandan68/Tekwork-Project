@@ -6,6 +6,7 @@ import os
 
 app = FastAPI(title="Smart Shelf AI API", version="1.0.0")
 
+
 # CORS middleware
 # In production, set FRONTEND_URL in your .env (e.g., FRONTEND_URL=https://my-smart-shelf.vercel.app)
 frontend_url = os.getenv("FRONTEND_URL", "http://localhost:3000")
